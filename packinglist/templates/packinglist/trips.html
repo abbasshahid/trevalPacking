@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trips</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            background-color: #fff;
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {background-color: #f2f2f2;}
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .pagination {
+    margin: 20px 0;
+}
+
+.step-links {
+    font-size: 1.2em;
+}
+
+.step-links a {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ddd;
+    color: #007bff;
+    text-decoration: none;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Trips</h1>
+        {% if page_obj %}
+            <table>
+                <tr>
+                    <th>Trip Name</th>
+                </tr>
+                {% for trip in page_obj %}
+                    <tr>
+                        <td><a href="{% url 'packinglist' trip.id %}">{{ trip.name }}</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% else %}
+            <p>No trips available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock content %}
